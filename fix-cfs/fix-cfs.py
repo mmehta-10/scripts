@@ -102,9 +102,10 @@ def FixPodIfAffected(pod_dir, dry_run):
     WriteFile(pod_dir, 'cpu.cfs_quota_us', new_quota)
     print('fixed pod %s with quota %d, period %d' %
           (pod_dir, new_quota, new_period))
-  except IOError:
-    print('Warning: failed to fix cfs at pod_dir %s, ',
-          'the directory may have disappeared.' % (pod_dir))
+  except IOError as e:
+    print(e.errno)
+    print(e)
+    print('Warning: failed to fix cfs at pod_dir %s! The directory may have disappeared.' % (pod_dir))
     return
 
 
@@ -137,9 +138,10 @@ def FixContainerIfAffected(container_dir, dry_run):
     WriteFile(container_dir, 'cpu.cfs_period_us', new_period)
     print('fixed container %s with quota %d, period %d' %
           (container_dir, new_quota, new_period))
-  except IOError:
-    print('Warning: failed to fix cfs at container_dir %s, ',
-          'the directory may have disappeared.' % (container_dir))
+  except IOError as e:
+    print(e.errno)
+    print(e)
+    print('Warning: failed to fix cfs at container_dir %s! The directory may have disappeared.' % (container_dir))
     return
 
 
