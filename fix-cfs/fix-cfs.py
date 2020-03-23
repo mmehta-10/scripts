@@ -22,6 +22,7 @@ import argparse
 import math
 import os
 import time
+import traceback
 
 
 def _ParseCommandLine():
@@ -106,6 +107,7 @@ def FixPodIfAffected(pod_dir, dry_run):
     print(e.errno)
     print(e)
     print('Warning: failed to fix cfs at pod_dir %s! The directory may have disappeared.' % (pod_dir))
+    traceback.print_exc()
     return
 
 
@@ -142,6 +144,7 @@ def FixContainerIfAffected(container_dir, dry_run):
     print(e.errno)
     print(e)
     print('Warning: failed to fix cfs at container_dir %s! The directory may have disappeared.' % (container_dir))
+    traceback.print_exc()
     return
 
 
