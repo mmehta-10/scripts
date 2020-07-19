@@ -148,8 +148,8 @@ def FixContainerIfAffected(container_dir, dry_run):
     return
 
 
-def FixAllPods(sysfs='/sys', dry_run=True):
-  pods_dir = os.path.join(sysfs, 'fs/cgroup/cpu/kubepods/burstable')
+def FixAllPods(sysfs='/sys', dry_run=True, syspath=''):
+  pods_dir = os.path.join(sysfs, syspath)
   pod_dirs = ListSubdirs(pods_dir)
   for pod_dir in pod_dirs:
     FixPodIfAffected(pod_dir, dry_run)
@@ -161,7 +161,8 @@ def FixAllPods(sysfs='/sys', dry_run=True):
 def main():
   args = _ParseCommandLine()
   while True:
-    FixAllPods(sysfs=args.sys, dry_run=args.dry_run)
+    FixAllPods(sysfs=args.sys, dry_run=args.dry_run, syspath='fs/cgroup/cpu/kubepods/burstable')
+    FixAllPods(sysfs=args.sys, dry_run=args.dry_run, syspath='fs/cgroup/cpu,cpuacct/kubepods/burstable') # additional directory where this may happen
     if args.interval:
       time.sleep(args.interval)
     else:
